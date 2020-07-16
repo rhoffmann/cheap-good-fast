@@ -21,9 +21,12 @@ module.exports = [
   },
   {
     mode: 'development',
-    entry: './src/app.tsx',
+    entry: './src/main.tsx',
     target: 'electron-renderer',
     devtool: 'source-map',
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
     module: {
       rules: [
         {
@@ -35,7 +38,7 @@ module.exports = [
     },
     output: {
       path: __dirname + '/dist',
-      filename: 'app.js',
+      filename: 'main.js',
     },
     plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
   },
