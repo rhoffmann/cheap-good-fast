@@ -4,8 +4,10 @@
   "description": "",
   "main": "src/main.js",
   "scripts": {
-    "build": "webpack --config ./webpack.config.js",
-    "start": "npm run build && electron ./dist/electron.js"
+    "build": "webpack",
+    "electron": "electron ./dist/electron.js",
+    "dev": "webpack --env.NODE_ENV=development && NODE_ENV=development npm run electron",
+    "start": "npm run build && npm run electron"
   },
   "author": "",
   "license": "ISC",

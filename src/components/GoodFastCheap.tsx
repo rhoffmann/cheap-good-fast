@@ -13,6 +13,9 @@ export default function SwitchesGroup() {
     fast: false,
   });
 
+  // TODO: use xstate state machine magic here, figure out how
+  // to map and process the logic to have only at most 2 options
+  // active at a time
   const handleChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
