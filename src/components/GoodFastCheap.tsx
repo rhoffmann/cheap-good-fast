@@ -6,19 +6,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { PinkSwitch, TealSwitch, OrangeSwitch } from './Switches';
 
-export default function SwitchesGroup() {
-  const [state, setState] = React.useState({
-    cheap: false,
-    good: false,
-    fast: false,
-  });
+import { useMachine } from '@xstate/react';
 
-  // TODO: use xstate state machine magic here, figure out how
-  // to map and process the logic to have only at most 2 options
-  // active at a time
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+import { cfgMachine } from './machines';
+
+export default function SwitchesGroup() {
+  const [state, send] = useMachine(cfgMachine);
 
   return (
     <FormControl component="fieldset">
@@ -27,8 +20,8 @@ export default function SwitchesGroup() {
         <FormControlLabel
           control={
             <PinkSwitch
-              checked={state.cheap}
-              onChange={handleChange}
+              checked={state.context.cheap}
+              onChange={() => send('CHEAP')}
               name="cheap"
             />
           }
@@ -37,8 +30,8 @@ export default function SwitchesGroup() {
         <FormControlLabel
           control={
             <TealSwitch
-              checked={state.good}
-              onChange={handleChange}
+              checked={state.context.good}
+              onChange={() => send('GOOD')}
               name="good"
             />
           }
@@ -47,15 +40,19 @@ export default function SwitchesGroup() {
         <FormControlLabel
           control={
             <OrangeSwitch
-              checked={state.fast}
-              onChange={handleChange}
+              checked={state.context.fast}
+              onChange={() => send('FAST')}
               name="fast"
             />
           }
           label="Fast"
         />
       </FormGroup>
-      <FormHelperText>Ok.</FormHelperText>
+      <FormHelperText>
+        {Object.keys(state.context)
+          .filter((key) => state.context[key])
+          .join(' & ')}
+      </FormHelperText>
     </FormControl>
   );
 }
